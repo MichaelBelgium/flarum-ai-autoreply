@@ -26,13 +26,10 @@ return [
         ->js(__DIR__.'/js/dist/admin.js')
         ->css(__DIR__.'/less/admin.less'),
 
-    (new Extend\Routes('api'))
-        ->get('/datlechin-chatgpt/models', 'datlechin-chatgpt.models', Api\Controller\ShowOpenAiModelsController::class),
-
     new Extend\Locales(__DIR__.'/locale'),
 
     (new Extend\Settings())
-        ->default('datlechin-chatgpt.model', 'text-davinci-003')
+        ->default('datlechin-chatgpt.model', 'gpt-5-mini')
         ->default('datlechin-chatgpt.enable_on_discussion_started', true)
         ->default('datlechin-chatgpt.max_tokens', 100)
         ->default('datlechin-chatgpt.user_prompt_badge_text', 'Assistant')
