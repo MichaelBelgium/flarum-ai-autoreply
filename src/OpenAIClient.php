@@ -25,13 +25,22 @@ class OpenAIClient
         $this->client = OpenAI::client($apiKey);
     }
 
-    public function completions(string $content = null): ?string
+    public function completions(string $content): ?string
     {
+        if ($this->client === null) {
+            return null;
+        }
+
         try {
-            $result = $this->client->completions()->create([
-                'model' => $this->settings->get('datlechin-chatgpt.model', 'text-davinci-003'),
-                'prompt' => $content,
-                'max_tokens' => (int) $this->settings->get('datlechin-chatgpt.max_tokens', 100),
+            $result = $this->client->chat()->create([
+                'model' => $this->settings->get('datlechin-chatgpt.model'),
+                'messages' => [
+                    [
+                        'role' => 'user',
+                        'content' => $content,
+                    ],
+                ],
+                'max_completion_tokens' => (int) $this->settings->get('datlechin-chatgpt.max_tokens'),
             ]);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
@@ -39,11 +48,6 @@ class OpenAIClient
             return null;
         }
 
-        return $result->choices[0]->text;
-    }
-
-    public function models(): Models
-    {
-        return $this->client->models();
+        return $result->choices[0]->message->content;
     }
 }
