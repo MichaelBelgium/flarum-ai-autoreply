@@ -2,7 +2,7 @@ import app from 'flarum/forum/app';
 import { extend } from 'flarum/common/extend';
 import PostUser from 'flarum/forum/components/PostUser';
 
-app.initializers.add('datlechin/flarum-chatgpt', () => {
+app.initializers.add('michaelbelgium/flarum-chatgpt', () => {
   extend(PostUser.prototype, 'view', function (view) {
     const user = this.attrs.post.user();
 

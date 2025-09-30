@@ -1,9 +1,9 @@
 import app from 'flarum/admin/app';
 import ChatGPTSettings from './components/ChatGPTSettings';
 
-app.initializers.add('datlechin/flarum-chatgpt', () => {
+app.initializers.add('michaelbelgium/flarum-chatgpt', () => {
   app.extensionData
-    .for('datlechin-chatgpt')
+    .for('michaelbelgium-chatgpt')
     .registerPermission(
       {
         label: app.translator.trans('datlechin-chatgpt.admin.permissions.use_chatgpt_assistant_label'),
