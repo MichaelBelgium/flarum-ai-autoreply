@@ -1,5 +1,5 @@
 {
-    "name": "datlechin/flarum-chatgpt",
+    "name": "michaelbelgium/flarum-chatgpt",
     "description": "ChatGPT: AI-powered Auto-Reply Extension for Flarum.",
     "keywords": [
         "flarum",
@@ -9,9 +9,9 @@
     "type": "flarum-extension",
     "license": "MIT",
     "require": {
-        "php": "^8.1",
-        "flarum/core": "^1.8.5",
-        "openai-php/client": "^0.10.1"
+        "php": "^8.2",
+        "flarum/core": "^1.0",
+        "openai-php/client": "^0.16.1"
     },
     "authors": [
         {
@@ -19,9 +19,14 @@
             "email": "datlechin@gmail.com",
             "role": "Developer",
             "homepage": "https://ngoquocdat.dev"
+        },
+        {
+            "name": "Michael V.",
+            "email": "michael@michaelbelgium.me",
+            "role": "Developer",
+            "homepage": "https://michaelbelgium.me"
         }
     ],
-    "homepage": "https://ngoquocdat.dev",
     "support": {
         "source": "https://github.com/datlechin/flarum-chatgpt",
         "forum": "https://discuss.flarum.org/d/32535"
