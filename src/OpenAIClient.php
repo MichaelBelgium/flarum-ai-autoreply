@@ -31,6 +31,8 @@ class OpenAIClient
             return null;
         }
 
+        $tokens = $this->settings->get('michaelbelgium-ai-autoreply.max_tokens');
+
         try {
             $result = $this->client->chat()->create([
                 'model' => $this->settings->get('michaelbelgium-ai-autoreply.model'),
@@ -40,7 +42,7 @@ class OpenAIClient
                         'content' => $content,
                     ],
                 ],
-                'max_completion_tokens' => (int) $this->settings->get('michaelbelgium-ai-autoreply.max_tokens'),
+                'max_completion_tokens' => empty($tokens) ? null : (int)$tokens,
             ]);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());

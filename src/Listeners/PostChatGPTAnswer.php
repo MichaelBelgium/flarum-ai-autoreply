@@ -31,8 +31,6 @@ class PostChatGPTAnswer
         $enabledTagIds = $this->settings->get('michaelbelgium-ai-autoreply.enabled-tags', '[]');
 
         if ($enabledTagIds = json_decode($enabledTagIds, true)) {
-            $discussion = $event->discussion;
-
             $tagIds = Arr::pluck($discussion->tags, 'id');
 
             if (! array_intersect($enabledTagIds, $tagIds)) {
@@ -48,14 +46,14 @@ class PostChatGPTAnswer
 
         $content = $this->client->completions($discussion->firstPost->content);
 
-        if (! $content) {
+        if (empty($content)) {
             return;
         }
 
         $post = CommentPost::reply(
             $discussion->id,
             $content,
-            $user->id ?? $actor->id,
+            $user?->id ?? $actor->id,
             null,
         );
 

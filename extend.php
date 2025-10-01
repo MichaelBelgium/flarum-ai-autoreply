@@ -31,7 +31,6 @@ return [
     (new Extend\Settings())
         ->default('michaelbelgium-ai-autoreply.model', 'gpt-5-mini')
         ->default('michaelbelgium-ai-autoreply.enable_on_discussion_started', true)
-        ->default('michaelbelgium-ai-autoreply.max_tokens', 100)
         ->default('michaelbelgium-ai-autoreply.user_prompt_badge_text', 'Assistant')
         ->serializeToForum('chatGptUserPromptId', 'michaelbelgium-ai-autoreply.user_prompt')
         ->serializeToForum('chatGptBadgeText', 'michaelbelgium-ai-autoreply.user_prompt_badge_text'),
