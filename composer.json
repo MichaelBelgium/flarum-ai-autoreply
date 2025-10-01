@@ -34,8 +34,8 @@
         }
     ],
     "support": {
-        "source": "https://github.com/datlechin/flarum-chatgpt",
-        "forum": "https://discuss.flarum.org/d/32535"
+        "source": "https://github.com/michaelbelgium/flarum-ai-autoreply",
+        "forum": "https://discuss.flarum.org/d/38244"
     },
     "autoload": {
         "psr-4": {

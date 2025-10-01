@@ -4,15 +4,19 @@
 
 A [Flarum](http://flarum.org) extension.
 
-The extension for Flarum includes an auto-reply discussion feature, customizable max tokens, and permission controls who can use this feature.
+This extension includes an auto-reply discussion feature, customizable max tokens, and permission controls who can use this feature.
+
+This extension is a fixed fork from [flarum-chatgpt](https://github.com/datlechin/flarum-chatgpt) with support for multiple platforms. Currently supporting:
+- OpenAI
+- Anthropic
+
+Any model from these 2 platforms can be used.
 
 The auto-answer feature uses the OpenAI gpt-5-mini model by default to generate quick and accurate responses to users' questions.
 
-![](https://user-images.githubusercontent.com/56961917/224526200-4aee65bf-59df-4892-b23d-aab644238101.gif)
-
 ## Installation
 
-This extension requierd **Flarum >= 1.7** and **PHP 8.2**.
+This extension requires **Flarum >= 1.7** and **PHP 8.2**.
 
 Install with composer:
 
@@ -32,4 +36,4 @@ php flarum cache:clear
 
 - [Packagist](https://packagist.org/packages/michaelbelgium/flarum-ai-autoreply)
 - [GitHub](https://github.com/michaelbelgium/flarum-ai-autoreply)
-- [Discuss](https://discuss.flarum.org/d/32535)
+- [Discuss](https://discuss.flarum.org/d/38244)
