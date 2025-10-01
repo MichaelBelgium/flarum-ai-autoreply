@@ -17,6 +17,6 @@ michaelbelgium-ai-autoreply:
       enabled_tags_help: Select which tags will be used to generate the answer.
 
     permissions:
-      use_chatgpt_assistant_label: Use ChatGPT Assistant
+      use_chatgpt_assistant_label: Use AI assistant
 
   forum:

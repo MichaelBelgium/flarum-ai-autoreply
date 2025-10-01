@@ -22,13 +22,13 @@ class PostChatGPTAnswer
 
     public function handle(Started $event): void
     {
-        if (! $this->settings->get('datlechin-chatgpt.enable_on_discussion_started', true)) {
+        if (! $this->settings->get('michaelbelgium-ai-autoreply.enable_on_discussion_started', true)) {
             return;
         }
 
         $discussion = $event->discussion;
         $actor = $event->actor;
-        $enabledTagIds = $this->settings->get('datlechin-chatgpt.enabled-tags', '[]');
+        $enabledTagIds = $this->settings->get('michaelbelgium-ai-autoreply.enabled-tags', '[]');
 
         if ($enabledTagIds = json_decode($enabledTagIds, true)) {
             $discussion = $event->discussion;
@@ -40,7 +40,7 @@ class PostChatGPTAnswer
             }
         }
 
-        if ($userId = $this->settings->get('datlechin-chatgpt.user_prompt')) {
+        if ($userId = $this->settings->get('michaelbelgium-ai-autoreply.user_prompt')) {
             $user = User::find($userId);
         }
 

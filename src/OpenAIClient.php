@@ -15,7 +15,7 @@ class OpenAIClient
 
     public function __construct(protected SettingsRepositoryInterface $settings, protected LoggerInterface $logger)
     {
-        $apiKey = $this->settings->get('datlechin-chatgpt.api_key');
+        $apiKey = $this->settings->get('michaelbelgium-ai-autoreply.api_key');
 
         if (empty($apiKey)) {
             $this->logger->error('OpenAI API key is not set.');
@@ -33,14 +33,14 @@ class OpenAIClient
 
         try {
             $result = $this->client->chat()->create([
-                'model' => $this->settings->get('datlechin-chatgpt.model'),
+                'model' => $this->settings->get('michaelbelgium-ai-autoreply.model'),
                 'messages' => [
                     [
                         'role' => 'user',
                         'content' => $content,
                     ],
                 ],
-                'max_completion_tokens' => (int) $this->settings->get('datlechin-chatgpt.max_tokens'),
+                'max_completion_tokens' => (int) $this->settings->get('michaelbelgium-ai-autoreply.max_tokens'),
             ]);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());

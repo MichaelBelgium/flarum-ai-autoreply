@@ -29,12 +29,12 @@ return [
     new Extend\Locales(__DIR__.'/locale'),
 
     (new Extend\Settings())
-        ->default('datlechin-chatgpt.model', 'gpt-5-mini')
-        ->default('datlechin-chatgpt.enable_on_discussion_started', true)
-        ->default('datlechin-chatgpt.max_tokens', 100)
-        ->default('datlechin-chatgpt.user_prompt_badge_text', 'Assistant')
-        ->serializeToForum('chatGptUserPromptId', 'datlechin-chatgpt.user_prompt')
-        ->serializeToForum('chatGptBadgeText', 'datlechin-chatgpt.user_prompt_badge_text'),
+        ->default('michaelbelgium-ai-autoreply.model', 'gpt-5-mini')
+        ->default('michaelbelgium-ai-autoreply.enable_on_discussion_started', true)
+        ->default('michaelbelgium-ai-autoreply.max_tokens', 100)
+        ->default('michaelbelgium-ai-autoreply.user_prompt_badge_text', 'Assistant')
+        ->serializeToForum('chatGptUserPromptId', 'michaelbelgium-ai-autoreply.user_prompt')
+        ->serializeToForum('chatGptBadgeText', 'michaelbelgium-ai-autoreply.user_prompt_badge_text'),
 
     (new Extend\Event())
         ->listen(Started::class, PostChatGPTAnswer::class),
