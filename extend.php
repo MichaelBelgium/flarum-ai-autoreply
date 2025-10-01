@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Datlechin\FlarumChatGPT;
+namespace MichaelBelgium\FlarumAIAutoReply;
 
-use Datlechin\FlarumChatGPT\Access\DiscussionPolicy;
-use Datlechin\FlarumChatGPT\Listener\PostChatGPTAnswer;
+use MichaelBelgium\FlarumAIAutoReply\Access\DiscussionPolicy;
+use MichaelBelgium\FlarumAIAutoReply\Listeners\PostChatGPTAnswer;
 use Flarum\Discussion\Discussion;
 use Flarum\Discussion\Event\Started;
 use Flarum\Extend;

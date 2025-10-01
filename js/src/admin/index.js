@@ -1,8 +1,8 @@
 import app from 'flarum/admin/app';
 
-app.initializers.add('michaelbelgium/flarum-chatgpt', () => {
+app.initializers.add('michaelbelgium/flarum-ai-autoreply', () => {
     app.extensionData
-        .for('michaelbelgium-chatgpt')
+        .for('michaelbelgium-ai-autoreply')
         .registerSetting({
             setting: 'datlechin-chatgpt.api_key',
             type: 'text',

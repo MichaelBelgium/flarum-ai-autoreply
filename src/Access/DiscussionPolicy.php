@@ -1,6 +1,6 @@
 <?php
 
-namespace Datlechin\FlarumChatGPT\Access;
+namespace MichaelBelgium\FlarumAIAutoReply\Access;
 
 use Flarum\Discussion\Discussion;
 use Flarum\Settings\SettingsRepositoryInterface;

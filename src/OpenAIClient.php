@@ -1,6 +1,6 @@
 <?php
 
-namespace Datlechin\FlarumChatGPT;
+namespace MichaelBelgium\FlarumAIAutoReply;
 
 use Exception;
 use Flarum\Settings\SettingsRepositoryInterface;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Datlechin\FlarumChatGPT\Listener;
+namespace MichaelBelgium\FlarumAIAutoReply\Listeners;
 
 use Carbon\Carbon;
-use Datlechin\FlarumChatGPT\OpenAIClient;
+use MichaelBelgium\FlarumAIAutoReply\OpenAIClient;
 use Flarum\Discussion\Event\Started;
 use Flarum\Post\CommentPost;
 use Flarum\Settings\SettingsRepositoryInterface;
