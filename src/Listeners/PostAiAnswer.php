@@ -3,6 +3,8 @@
 namespace MichaelBelgium\FlarumAIAutoReply\Listeners;
 
 use Carbon\Carbon;
+use MichaelBelgium\FlarumAIAutoReply\AnthropicClient;
+use MichaelBelgium\FlarumAIAutoReply\IPlatform;
 use MichaelBelgium\FlarumAIAutoReply\OpenAIClient;
 use Flarum\Discussion\Event\Started;
 use Flarum\Post\CommentPost;
@@ -11,12 +13,13 @@ use Flarum\User\User;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Arr;
 
-class PostChatGPTAnswer
+class PostAiAnswer
 {
     public function __construct(
         protected Dispatcher $events,
         protected SettingsRepositoryInterface $settings,
-        protected OpenAIClient $client
+        protected OpenAIClient $openAIClient,
+        protected AnthropicClient $anthropicClient
     ) {
     }
 
@@ -44,7 +47,15 @@ class PostChatGPTAnswer
 
         $actor->assertCan('useChatGPTAssistant', $discussion);
 
-        $content = $this->client->completions($discussion->firstPost->content);
+        $platform = $this->settings->get('michaelbelgium-ai-autoreply.platform', 'openai');
+
+        /** @var IPlatform $client */
+        $client = match($platform) {
+            'anthropic' => $this->anthropicClient,
+            default => $this->openAIClient,
+        };
+
+        $content = $client->completions($discussion->firstPost->content);
 
         if (empty($content)) {
             return;

@@ -12,7 +12,7 @@
 namespace MichaelBelgium\FlarumAIAutoReply;
 
 use MichaelBelgium\FlarumAIAutoReply\Access\DiscussionPolicy;
-use MichaelBelgium\FlarumAIAutoReply\Listeners\PostChatGPTAnswer;
+use MichaelBelgium\FlarumAIAutoReply\Listeners\PostAiAnswer;
 use Flarum\Discussion\Discussion;
 use Flarum\Discussion\Event\Started;
 use Flarum\Extend;
@@ -37,7 +37,7 @@ return [
         ->serializeToForum('chatGptBadgeText', 'michaelbelgium-ai-autoreply.user_prompt_badge_text'),
 
     (new Extend\Event())
-        ->listen(Started::class, PostChatGPTAnswer::class),
+        ->listen(Started::class, PostAiAnswer::class),
 
     (new Extend\Policy())
         ->modelPolicy(Discussion::class, DiscussionPolicy::class),
