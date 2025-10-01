@@ -4,6 +4,13 @@ app.initializers.add('michaelbelgium/flarum-ai-autoreply', () => {
     app.extensionData
         .for('michaelbelgium-ai-autoreply')
         .registerSetting({
+            setting: 'michaelbelgium-ai-autoreply.platform',
+            type: 'dropdown',
+            options: {openai: 'Open AI', anthropic: 'Anthropic'},
+            label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.platform_label'),
+            help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.platform_help'),
+        })
+        .registerSetting({
             setting: 'michaelbelgium-ai-autoreply.api_key',
             type: 'text',
             label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.api_key_label'),
@@ -17,7 +24,8 @@ app.initializers.add('michaelbelgium/flarum-ai-autoreply', () => {
             type: 'text',
             label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.model_label'),
             help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.model_help', {
-                a: <a href="https://platform.openai.com/docs/models/overview" target="_blank" rel="noopener" />,
+                openai: <a href="https://platform.openai.com/docs/models/overview" target="_blank" rel="noopener">Open AI models</a>,
+                anthropic: <a href="https://docs.claude.com/en/docs/about-claude/models/overview" target="_blank" rel="noopener">Anthropic models</a>,
             }),
         })
         .registerSetting({

@@ -29,6 +29,7 @@ return [
     new Extend\Locales(__DIR__.'/locale'),
 
     (new Extend\Settings())
+        ->default('michaelbelgium-ai-autoreply.platform', 'openai')
         ->default('michaelbelgium-ai-autoreply.model', 'gpt-5-mini')
         ->default('michaelbelgium-ai-autoreply.enable_on_discussion_started', true)
         ->default('michaelbelgium-ai-autoreply.user_prompt_badge_text', 'Assistant')
