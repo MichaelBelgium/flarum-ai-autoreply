@@ -9,6 +9,7 @@ This extension includes an auto-reply discussion feature, customizable max token
 This extension is a fixed fork from [flarum-chatgpt](https://github.com/datlechin/flarum-chatgpt) with support for multiple platforms. Currently supporting:
 - OpenAI
 - Anthropic
+- OpenRouter
 
 Any model from these 2 platforms can be used.
 

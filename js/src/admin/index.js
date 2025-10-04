@@ -6,7 +6,7 @@ app.initializers.add('michaelbelgium/flarum-ai-autoreply', () => {
         .registerSetting({
             setting: 'michaelbelgium-ai-autoreply.platform',
             type: 'dropdown',
-            options: {openai: 'Open AI', anthropic: 'Anthropic'},
+            options: {openai: 'Open AI', anthropic: 'Anthropic', openrouter: 'OpenRouter'},
             label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.platform_label'),
             help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.platform_help'),
         })
@@ -26,6 +26,7 @@ app.initializers.add('michaelbelgium/flarum-ai-autoreply', () => {
             help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.model_help', {
                 openai: <a href="https://platform.openai.com/docs/models/overview" target="_blank" rel="noopener">Open AI models</a>,
                 anthropic: <a href="https://docs.claude.com/en/docs/about-claude/models/overview" target="_blank" rel="noopener">Anthropic models</a>,
+                openrouter: <a href="https://openrouter.ai/models" target="_blank" rel="noopener">OpenRouter models</a>,
             }),
         })
         .registerSetting({

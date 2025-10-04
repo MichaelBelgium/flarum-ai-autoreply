@@ -3,15 +3,16 @@
 namespace MichaelBelgium\FlarumAIAutoReply\Listeners;
 
 use Carbon\Carbon;
-use MichaelBelgium\FlarumAIAutoReply\AnthropicClient;
-use MichaelBelgium\FlarumAIAutoReply\IPlatform;
-use MichaelBelgium\FlarumAIAutoReply\OpenAIClient;
 use Flarum\Discussion\Event\Started;
 use Flarum\Post\CommentPost;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\User;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Arr;
+use MichaelBelgium\FlarumAIAutoReply\AnthropicClient;
+use MichaelBelgium\FlarumAIAutoReply\IPlatform;
+use MichaelBelgium\FlarumAIAutoReply\OpenAIClient;
+use MichaelBelgium\FlarumAIAutoReply\OpenrouterClient;
 
 class PostAiAnswer
 {
@@ -19,7 +20,8 @@ class PostAiAnswer
         protected Dispatcher $events,
         protected SettingsRepositoryInterface $settings,
         protected OpenAIClient $openAIClient,
-        protected AnthropicClient $anthropicClient
+        protected AnthropicClient $anthropicClient,
+        protected OpenrouterClient $openrouterClient,
     ) {
     }
 
@@ -47,11 +49,12 @@ class PostAiAnswer
 
         $actor->assertCan('useChatGPTAssistant', $discussion);
 
-        $platform = $this->settings->get('michaelbelgium-ai-autoreply.platform', 'openai');
+        $platform = $this->settings->get('michaelbelgium-ai-autoreply.platform');
 
         /** @var IPlatform $client */
         $client = match($platform) {
             'anthropic' => $this->anthropicClient,
+            'openrouter' => $this->openrouterClient,
             default => $this->openAIClient,
         };
 
