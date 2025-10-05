@@ -1,4 +1,5 @@
 import app from 'flarum/admin/app';
+import Select from 'flarum/common/components/Select';
 
 const models = {
     openai: {
@@ -13,7 +14,7 @@ const models = {
     },
     openrouter: {
         name: 'OpenRouter',
-        modelsUrl: 'https://docs.openrouter.ai/docs/models/available-models',
+        modelsUrl: 'https://openrouter.ai/models',
         keysUrl: 'https://openrouter.ai/settings/keys',
     },
 };
@@ -30,32 +31,76 @@ app.initializers.add('michaelbelgium/flarum-ai-autoreply', () => {
 
     app.extensionData
         .for('michaelbelgium-ai-autoreply')
-        .registerSetting({
-            setting: 'michaelbelgium-ai-autoreply.platform',
-            type: 'dropdown',
-            options: modelNames,
-            label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.platform_label'),
-            help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.platform_help'),
+        // .registerSetting({
+        //     setting: 'michaelbelgium-ai-autoreply.platform',
+        //     type: 'dropdown',
+        //     options: modelNames,
+        //     label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.platform_label'),
+        //     help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.platform_help'),
+        // })
+        .registerSetting(function () {
+            return m('.Form-group', [
+                m('label', app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.platform_label')),
+                m('.helpText', app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.platform_help')),
+                Select.component({
+                    value: this.setting('michaelbelgium-ai-autoreply.platform')(),
+                    options: modelNames,
+                    onchange: (value) => {
+                        selectedModel = models[value];
+                        this.setting('michaelbelgium-ai-autoreply.platform')(value);
+                    }
+                })
+            ]);
         })
-        .registerSetting({
-            setting: 'michaelbelgium-ai-autoreply.api_key',
-            type: 'text',
-            label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.api_key_label'),
-            help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.api_key_help', {
-                a: <a href={selectedModel.keysUrl} target="_blank" rel="noopener" />,
-                platform: selectedModel.name,
-            }),
-            placeholder: 'sk-...',
+        // .registerSetting({
+        //     setting: 'michaelbelgium-ai-autoreply.api_key',
+        //     type: 'text',
+        //     label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.api_key_label'),
+        //     help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.api_key_help', {
+        //         a: <a href={selectedModel.keysUrl} target="_blank" rel="noopener" />,
+        //         platform: selectedModel.name,
+        //     }),
+        //     placeholder: 'sk-...',
+        //     required: true,
+        // })
+        // .registerSetting({
+        //     setting: 'michaelbelgium-ai-autoreply.model',
+        //     type: 'text',
+        //     label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.model_label'),
+        //     help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.model_help', {
+        //         a: <a href={selectedModel.modelsUrl} target="_blank" rel="noopener" />,
+        //         platform: selectedModel.name,
+        //     }),
+        //     required: true
+        // })
+        .registerSetting(function () {
+            return m('.Form-group', [
+                m('label', app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.api_key_label')),
+                m('.helpText', app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.api_key_help', {
+                    a: <a href={selectedModel.keysUrl} target="_blank" rel="noopener" />,
+                    platform: selectedModel.name,
+                })),
+                m('input.FormControl', {
+                    type: 'text',
+                    bidi: this.setting('michaelbelgium-ai-autoreply.api_key'),
+                    placeholder: 'sk-...',
+                    required: true,
+                }),
+            ]);
         })
-        .registerSetting({
-            setting: 'michaelbelgium-ai-autoreply.model',
-            type: 'text',
-            label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.model_label'),
-            help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.model_help', {
-                a: <a href={selectedModel.modelsUrl} target="_blank" rel="noopener" />,
-                platform: selectedModel.name,
-            }),
-            required: true
+        .registerSetting(function () {
+            return m('.Form-group', [
+                m('label', app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.model_label')),
+                m('.helpText', app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.model_help', {
+                    a: <a href={selectedModel.modelsUrl} target="_blank" rel="noopener" />,
+                    platform: selectedModel.name,
+                })),
+                m('input.FormControl', {
+                    type: 'text',
+                    bidi: this.setting('michaelbelgium-ai-autoreply.model'),
+                    required: true,
+                }),
+            ]);
         })
         .registerSetting({
             setting: 'michaelbelgium-ai-autoreply.max_tokens',
@@ -67,7 +112,7 @@ app.initializers.add('michaelbelgium/flarum-ai-autoreply', () => {
         })
         .registerSetting({
             setting: 'michaelbelgium-ai-autoreply.user_prompt',
-            type: 'text',
+            type: 'number',
             label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.user_prompt_label'),
             help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.user_prompt_help'),
         })

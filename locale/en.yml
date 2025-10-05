@@ -2,7 +2,7 @@ michaelbelgium-ai-autoreply:
   admin:
     settings:
       platform_label: Platform
-      platform_help: "Select the AI platform to use (default: <code>OpenAI</code>)."
+      platform_help: "Select the AI platform to use."
       api_key_label: API Key
       api_key_help: Get the API key from <a>{platform}</a>.
       model_label: Model
