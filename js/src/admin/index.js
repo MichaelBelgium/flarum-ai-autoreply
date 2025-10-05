@@ -1,12 +1,39 @@
 import app from 'flarum/admin/app';
 
+const models = {
+    openai: {
+        name: 'Open AI',
+        modelsUrl: 'https://platform.openai.com/docs/models/overview',
+        keysUrl: 'https://platform.openai.com/account/api-keys',
+    },
+    anthropic: {
+        name: 'Anthropic',
+        modelsUrl: 'https://www.anthropic.com/docs/claude/models',
+        keysUrl: 'https://console.anthropic.com/settings/keys',
+    },
+    openrouter: {
+        name: 'OpenRouter',
+        modelsUrl: 'https://docs.openrouter.ai/docs/models/available-models',
+        keysUrl: 'https://openrouter.ai/settings/keys',
+    },
+};
+
+const modelNames = Object.entries(models).reduce((result, [key, value]) => {
+    result[key] = value.name;
+    return result;
+}, {});
+
+
 app.initializers.add('michaelbelgium/flarum-ai-autoreply', () => {
+    const savedPlatform = app.data.settings['michaelbelgium-ai-autoreply.platform'] || 'openai';
+    let selectedModel = models[savedPlatform];
+
     app.extensionData
         .for('michaelbelgium-ai-autoreply')
         .registerSetting({
             setting: 'michaelbelgium-ai-autoreply.platform',
             type: 'dropdown',
-            options: {openai: 'Open AI', anthropic: 'Anthropic', openrouter: 'OpenRouter'},
+            options: modelNames,
             label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.platform_label'),
             help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.platform_help'),
         })
@@ -15,7 +42,8 @@ app.initializers.add('michaelbelgium/flarum-ai-autoreply', () => {
             type: 'text',
             label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.api_key_label'),
             help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.api_key_help', {
-                a: <a href="https://platform.openai.com/account/api-keys" target="_blank" rel="noopener" />,
+                a: <a href={selectedModel.keysUrl} target="_blank" rel="noopener" />,
+                platform: selectedModel.name,
             }),
             placeholder: 'sk-...',
         })
@@ -24,10 +52,10 @@ app.initializers.add('michaelbelgium/flarum-ai-autoreply', () => {
             type: 'text',
             label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.model_label'),
             help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.model_help', {
-                openai: <a href="https://platform.openai.com/docs/models/overview" target="_blank" rel="noopener">Open AI models</a>,
-                anthropic: <a href="https://docs.claude.com/en/docs/about-claude/models/overview" target="_blank" rel="noopener">Anthropic models</a>,
-                openrouter: <a href="https://openrouter.ai/models" target="_blank" rel="noopener">OpenRouter models</a>,
+                a: <a href={selectedModel.modelsUrl} target="_blank" rel="noopener" />,
+                platform: selectedModel.name,
             }),
+            required: true
         })
         .registerSetting({
             setting: 'michaelbelgium-ai-autoreply.max_tokens',
