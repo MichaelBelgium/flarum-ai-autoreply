@@ -11,7 +11,7 @@ This extension is a fixed fork from [flarum-chatgpt](https://github.com/datlechi
 - Anthropic
 - OpenRouter
 
-Any model from these 2 platforms can be used.
+Models from any of the supported platforms can be used. If you're using OpenRouter, you can specify a comma-separated list of models in the `model` setting to take advantage of its [model routing feature](https://openrouter.ai/docs/features/model-routing#the-models-parameter).
 
 The auto-answer feature uses the OpenAI gpt-5-mini model by default to generate quick and accurate responses to users' questions.
 
