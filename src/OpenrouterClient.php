@@ -36,23 +36,29 @@ class OpenrouterClient implements IPlatform
             return null;
 
         $model = $this->settings->get('michaelbelgium-ai-autoreply.model');
+        $tokens = $this->settings->get('michaelbelgium-ai-autoreply.max_tokens');
 
         if (empty($models))
             $model = 'openrouter/auto';
         else if (str_contains($model, ','))
             $model = explode(',', $models);
 
+        $options = [
+            'model' => $model,
+            'messages' => [
+                [
+                    'role' => 'user',
+                    'content' => $content
+                ]
+            ]
+        ];
+
+        if (!empty($tokens))
+            $options['max_tokens'] = (int)$tokens;
+
         try {
             $response = $this->client->post('https://openrouter.ai/api/v1/chat/completions', [
-                RequestOptions::JSON => [
-                    'model' => $model,
-                    'messages' => [
-                        [
-                            'role' => 'user',
-                            'content' => $content
-                        ]
-                    ]
-                ]
+                RequestOptions::JSON => $options
             ]);
 
             $json = json_decode((string)$response->getBody(), true);
