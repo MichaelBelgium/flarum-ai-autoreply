@@ -102,7 +102,7 @@ app.initializers.add('michaelbelgium/flarum-ai-autoreply', () => {
                 m('input.FormControl', {
                     type: 'text',
                     bidi: this.setting('michaelbelgium-ai-autoreply.model'),
-                    required: true,
+                    placeholder: selectedModel.defaultModel,
                 }),
             ]);
         })
