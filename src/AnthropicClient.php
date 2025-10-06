@@ -28,12 +28,13 @@ class AnthropicClient implements IPlatform
             return null;
 
         $tokens = $this->settings->get('michaelbelgium-ai-autoreply.max_tokens');
+        $model = $this->settings->get('michaelbelgium-ai-autoreply.model');
 
         try {
             $message = $this->client->messages->create(
                 empty($tokens) ? 1024 : (int)$tokens,
                 [MessageParam::with($content, 'user')],
-                $this->settings->get('michaelbelgium-ai-autoreply.model')
+                empty($model) ? 'claude-sonnet-4-5' : $model
             );
 
             return $message->content[0]['text'];

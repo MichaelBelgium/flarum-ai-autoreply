@@ -6,16 +6,19 @@ const models = {
         name: 'Open AI',
         modelsUrl: 'https://platform.openai.com/docs/models/overview',
         keysUrl: 'https://platform.openai.com/account/api-keys',
+        defaultModel: 'gpt-5-mini',
     },
     anthropic: {
         name: 'Anthropic',
-        modelsUrl: 'https://www.anthropic.com/docs/claude/models',
+        modelsUrl: 'https://docs.claude.com/en/docs/about-claude/models/overview',
         keysUrl: 'https://console.anthropic.com/settings/keys',
+        defaultModel: 'claude-sonnet-4-5'
     },
     openrouter: {
         name: 'OpenRouter',
         modelsUrl: 'https://openrouter.ai/models',
         keysUrl: 'https://openrouter.ai/settings/keys',
+        defaultModel: 'openrouter/auto',
     },
 };
 
@@ -94,6 +97,7 @@ app.initializers.add('michaelbelgium/flarum-ai-autoreply', () => {
                 m('.helpText', app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.model_help', {
                     a: <a href={selectedModel.modelsUrl} target="_blank" rel="noopener" />,
                     platform: selectedModel.name,
+                    model: selectedModel.defaultModel,
                 })),
                 m('input.FormControl', {
                     type: 'text',

@@ -30,10 +30,11 @@ class OpenAIClient implements IPlatform
             return null;
 
         $tokens = $this->settings->get('michaelbelgium-ai-autoreply.max_tokens');
+        $model = $this->settings->get('michaelbelgium-ai-autoreply.model');
 
         try {
             $result = $this->client->chat()->create([
-                'model' => $this->settings->get('michaelbelgium-ai-autoreply.model'),
+                'model' => empty($model) ? 'gpt-5-mini' : $model,
                 'messages' => [
                     [
                         'role' => 'user',

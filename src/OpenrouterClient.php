@@ -38,7 +38,7 @@ class OpenrouterClient implements IPlatform
         $model = $this->settings->get('michaelbelgium-ai-autoreply.model');
         $tokens = $this->settings->get('michaelbelgium-ai-autoreply.max_tokens');
 
-        if (empty($models))
+        if (empty($model))
             $model = 'openrouter/auto';
         else if (str_contains($model, ','))
             $model = explode(',', $models);
