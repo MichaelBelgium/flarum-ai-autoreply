@@ -20,6 +20,12 @@ const models = {
         keysUrl: 'https://openrouter.ai/settings/keys',
         defaultModel: 'openrouter/auto',
     },
+    google: {
+        name: 'Google (Gemini)',
+        modelsUrl: 'https://ai.google.dev/gemini-api/docs/models',
+        keysUrl: 'https://aistudio.google.com/api-keys',
+        defaultModel: 'gemini-2.5-flash-lite',
+    },
 };
 
 const modelNames = Object.entries(models).reduce((result, [key, value]) => {
@@ -34,13 +40,6 @@ app.initializers.add('michaelbelgium/flarum-ai-autoreply', () => {
 
     app.extensionData
         .for('michaelbelgium-ai-autoreply')
-        // .registerSetting({
-        //     setting: 'michaelbelgium-ai-autoreply.platform',
-        //     type: 'dropdown',
-        //     options: modelNames,
-        //     label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.platform_label'),
-        //     help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.platform_help'),
-        // })
         .registerSetting(function () {
             return m('.Form-group', [
                 m('label', app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.platform_label')),
@@ -55,27 +54,6 @@ app.initializers.add('michaelbelgium/flarum-ai-autoreply', () => {
                 })
             ]);
         })
-        // .registerSetting({
-        //     setting: 'michaelbelgium-ai-autoreply.api_key',
-        //     type: 'text',
-        //     label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.api_key_label'),
-        //     help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.api_key_help', {
-        //         a: <a href={selectedModel.keysUrl} target="_blank" rel="noopener" />,
-        //         platform: selectedModel.name,
-        //     }),
-        //     placeholder: 'sk-...',
-        //     required: true,
-        // })
-        // .registerSetting({
-        //     setting: 'michaelbelgium-ai-autoreply.model',
-        //     type: 'text',
-        //     label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.model_label'),
-        //     help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.model_help', {
-        //         a: <a href={selectedModel.modelsUrl} target="_blank" rel="noopener" />,
-        //         platform: selectedModel.name,
-        //     }),
-        //     required: true
-        // })
         .registerSetting(function () {
             return m('.Form-group', [
                 m('label', app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.api_key_label')),

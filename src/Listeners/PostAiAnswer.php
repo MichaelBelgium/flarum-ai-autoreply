@@ -10,6 +10,7 @@ use Flarum\User\User;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Arr;
 use MichaelBelgium\FlarumAIAutoReply\AnthropicClient;
+use MichaelBelgium\FlarumAIAutoReply\GoogleClient;
 use MichaelBelgium\FlarumAIAutoReply\IPlatform;
 use MichaelBelgium\FlarumAIAutoReply\OpenAIClient;
 use MichaelBelgium\FlarumAIAutoReply\OpenrouterClient;
@@ -22,6 +23,7 @@ class PostAiAnswer
         protected OpenAIClient $openAIClient,
         protected AnthropicClient $anthropicClient,
         protected OpenrouterClient $openrouterClient,
+        protected GoogleClient $googleClient,
     ) {
     }
 
@@ -55,6 +57,7 @@ class PostAiAnswer
         $client = match($platform) {
             'anthropic' => $this->anthropicClient,
             'openrouter' => $this->openrouterClient,
+            'google' => $this->googleClient,
             default => $this->openAIClient,
         };
 
