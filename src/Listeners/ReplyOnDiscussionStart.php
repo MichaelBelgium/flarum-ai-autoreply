@@ -14,12 +14,14 @@ use MichaelBelgium\FlarumAIAutoReply\GoogleClient;
 use MichaelBelgium\FlarumAIAutoReply\IPlatform;
 use MichaelBelgium\FlarumAIAutoReply\OpenAIClient;
 use MichaelBelgium\FlarumAIAutoReply\OpenrouterClient;
+use Psr\Log\LoggerInterface;
 
-class PostAiAnswer
+class ReplyOnDiscussionStart
 {
     public function __construct(
         protected Dispatcher $events,
         protected SettingsRepositoryInterface $settings,
+        protected LoggerInterface $logger,
         protected OpenAIClient $openAIClient,
         protected AnthropicClient $anthropicClient,
         protected OpenrouterClient $openrouterClient,
@@ -29,7 +31,7 @@ class PostAiAnswer
 
     public function handle(Started $event): void
     {
-        if (! $this->settings->get('michaelbelgium-ai-autoreply.enable_on_discussion_started', true)) {
+        if (!$this->settings->get('michaelbelgium-ai-autoreply.enable_on_discussion_started', true)) {
             return;
         }
 
@@ -47,6 +49,11 @@ class PostAiAnswer
 
         if ($userId = $this->settings->get('michaelbelgium-ai-autoreply.user_prompt')) {
             $user = User::find($userId);
+
+            if ($user === null) {
+                $this->logger->warning('No assistant user found with ID ' . $userId);
+                return;
+            }
         }
 
         $actor->assertCan('useChatGPTAssistant', $discussion);
