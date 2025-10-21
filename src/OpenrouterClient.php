@@ -37,6 +37,7 @@ class OpenrouterClient implements IPlatform
 
         $model = $this->settings->get('michaelbelgium-ai-autoreply.model');
         $tokens = $this->settings->get('michaelbelgium-ai-autoreply.max_tokens');
+        $temperature = $this->settings->get('michaelbelgium-ai-autoreply.temperature');
 
         $options = [
             'messages' => [
@@ -56,6 +57,9 @@ class OpenrouterClient implements IPlatform
 
         if (!empty($tokens))
             $options['max_tokens'] = (int)$tokens;
+
+        if (!empty($temperature))
+            $options['temperature'] = $temperature;
 
         try {
             $response = $this->client->post('https://openrouter.ai/api/v1/chat/completions', [

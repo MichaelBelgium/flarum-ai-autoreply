@@ -6,6 +6,7 @@ use Anthropic\Client;
 use Anthropic\Messages\MessageParam;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Psr\Log\LoggerInterface;
+use const Anthropic\Core\OMIT as omit;
 
 class AnthropicClient implements IPlatform
 {
@@ -29,12 +30,14 @@ class AnthropicClient implements IPlatform
 
         $tokens = $this->settings->get('michaelbelgium-ai-autoreply.max_tokens');
         $model = $this->settings->get('michaelbelgium-ai-autoreply.model');
+        $temperature = $this->settings->get('michaelbelgium-ai-autoreply.temperature');
 
         try {
             $message = $this->client->messages->create(
                 empty($tokens) ? 1024 : (int)$tokens,
                 [MessageParam::with($content, 'user')],
-                empty($model) ? 'claude-sonnet-4-5' : $model
+                empty($model) ? 'claude-sonnet-4-5' : $model,
+                temperature: empty($temperature) ? omit : $temperature
             );
 
             return $message->content[0]['text'];

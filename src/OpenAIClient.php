@@ -31,6 +31,7 @@ class OpenAIClient implements IPlatform
 
         $tokens = $this->settings->get('michaelbelgium-ai-autoreply.max_tokens');
         $model = $this->settings->get('michaelbelgium-ai-autoreply.model');
+        $temperature = $this->settings->get('michaelbelgium-ai-autoreply.temperature');
 
         try {
             $result = $this->client->chat()->create([
@@ -42,6 +43,7 @@ class OpenAIClient implements IPlatform
                     ],
                 ],
                 'max_completion_tokens' => empty($tokens) ? null : (int)$tokens,
+                'temperature' => empty($temperature) ? 1 : (float)$temperature,
             ]);
 
             return $result->choices[0]->message->content;

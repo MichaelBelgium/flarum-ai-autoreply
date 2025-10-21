@@ -93,6 +93,13 @@ app.initializers.add('michaelbelgium/flarum-ai-autoreply', () => {
             }),
         })
         .registerSetting({
+            setting: 'michaelbelgium-ai-autoreply.temperature',
+            type: 'number',
+            step: 0.1,
+            label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.temperature_label'),
+            help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.temperature_help'),
+        })
+        .registerSetting({
             setting: 'michaelbelgium-ai-autoreply.user_prompt',
             type: 'number',
             label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.user_prompt_label'),
