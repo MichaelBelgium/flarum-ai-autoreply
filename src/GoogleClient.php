@@ -36,6 +36,7 @@ class GoogleClient implements IPlatform
 
         $model = $this->settings->get('michaelbelgium-ai-autoreply.model');
         $tokens = $this->settings->get('michaelbelgium-ai-autoreply.max_tokens');
+        $temperature = $this->settings->get('michaelbelgium-ai-autoreply.temperature');
 
         $options = [
             'messages' => [
@@ -51,6 +52,13 @@ class GoogleClient implements IPlatform
             $options['model'] = 'gemini-2.5-flash-lite';
         else
             $options['model'] = $model;
+
+        if (!empty($temperature))
+        {
+            $options['generationConfig'] = [
+                'temperature' => (float)$temperature
+            ];
+        }
 
         try {
             $response = $this->client->post('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', [
