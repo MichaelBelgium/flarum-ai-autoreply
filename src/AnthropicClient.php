@@ -35,7 +35,7 @@ class AnthropicClient implements IPlatform
             $message = $this->client->messages->create(
                 empty($tokens) ? 1024 : (int)$tokens,
                 $messages,
-                empty($model) ? 'claude-sonnet-4-5' : $model,
+                empty($model) ? 'claude-haiku-4-5' : $model,
                 temperature: empty($temperature) ? omit : $temperature
             );
 

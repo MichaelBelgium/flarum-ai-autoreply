@@ -12,7 +12,7 @@ const models = {
         name: 'Anthropic',
         modelsUrl: 'https://docs.claude.com/en/docs/about-claude/models/overview',
         keysUrl: 'https://console.anthropic.com/settings/keys',
-        defaultModel: 'claude-sonnet-4-5'
+        defaultModel: 'claude-haiku-4-5'
     },
     openrouter: {
         name: 'OpenRouter',
