@@ -102,6 +102,7 @@ app.initializers.add('michaelbelgium/flarum-ai-autoreply', () => {
         .registerSetting({
             setting: 'michaelbelgium-ai-autoreply.user_prompt',
             type: 'number',
+            required: true,
             label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.user_prompt_label'),
             help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.user_prompt_help'),
         })
