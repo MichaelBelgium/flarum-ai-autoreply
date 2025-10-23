@@ -30,7 +30,7 @@ class OpenrouterClient implements IPlatform
         ]);
     }
 
-    public function completions(string $content): ?string
+    public function completions(array $messages): ?string
     {
         if ($this->client === null)
             return null;
@@ -40,12 +40,7 @@ class OpenrouterClient implements IPlatform
         $temperature = $this->settings->get('michaelbelgium-ai-autoreply.temperature');
 
         $options = [
-            'messages' => [
-                [
-                    'role' => 'user',
-                    'content' => $content
-                ]
-            ]
+            'messages' => $messages
         ];
 
         if (empty($model))

@@ -24,7 +24,7 @@ class OpenAIClient implements IPlatform
         $this->client = OpenAI::client($apiKey);
     }
 
-    public function completions(string $content): ?string
+    public function completions(array $messages): ?string
     {
         if ($this->client === null)
             return null;
@@ -36,12 +36,7 @@ class OpenAIClient implements IPlatform
         try {
             $result = $this->client->chat()->create([
                 'model' => empty($model) ? 'gpt-5-mini' : $model,
-                'messages' => [
-                    [
-                        'role' => 'user',
-                        'content' => $content,
-                    ],
-                ],
+                'messages' => $messages,
                 'max_completion_tokens' => empty($tokens) ? null : (int)$tokens,
                 'temperature' => empty($temperature) ? 1 : (float)$temperature,
             ]);

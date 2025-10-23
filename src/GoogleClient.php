@@ -29,7 +29,7 @@ class GoogleClient implements IPlatform
         ]);
     }
 
-    public function completions(string $content): ?string
+    public function completions(array $messages): ?string
     {
         if ($this->client === null)
             return null;
@@ -39,12 +39,7 @@ class GoogleClient implements IPlatform
         $temperature = $this->settings->get('michaelbelgium-ai-autoreply.temperature');
 
         $options = [
-            'messages' => [
-                [
-                    'role' => 'user',
-                    'content' => $content
-                ]
-            ],
+            'messages' => $messages,
             'max_completion_tokens' => empty($tokens) ? null : (int)$tokens,
         ];
 

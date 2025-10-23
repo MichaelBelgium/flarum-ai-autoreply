@@ -3,7 +3,6 @@
 namespace MichaelBelgium\FlarumAIAutoReply;
 
 use Anthropic\Client;
-use Anthropic\Messages\MessageParam;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use const Anthropic\Core\OMIT as omit;
@@ -23,7 +22,7 @@ class AnthropicClient implements IPlatform
          $this->client = new Client($apiKey);
     }
 
-    public function completions(string $content): ?string
+    public function completions(array $messages): ?string
     {
         if ($this->client === null)
             return null;
@@ -35,7 +34,7 @@ class AnthropicClient implements IPlatform
         try {
             $message = $this->client->messages->create(
                 empty($tokens) ? 1024 : (int)$tokens,
-                [MessageParam::with($content, 'user')],
+                $messages,
                 empty($model) ? 'claude-sonnet-4-5' : $model,
                 temperature: empty($temperature) ? omit : $temperature
             );
