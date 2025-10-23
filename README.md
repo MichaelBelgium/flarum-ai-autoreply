@@ -10,14 +10,15 @@ This extension is a fixed fork from [flarum-chatgpt](https://github.com/datlechi
 - OpenAI
 - Anthropic
 - OpenRouter
+- Google
 
 Models from any of the supported platforms can be used. If you're using OpenRouter, you can specify a comma-separated list of models in the `model` setting to take advantage of its [model routing feature](https://openrouter.ai/docs/features/model-routing#the-models-parameter).
 
-The auto-answer feature uses the OpenAI gpt-5-mini model by default to generate quick and accurate responses to users' questions.
+The auto-answer feature uses the OpenAI gpt-5-mini model by default to generate quick and accurate responses to users' questions. AI can respond on discussion start or a discussion can act as chat between user and AI.
 
 ## Installation
 
-This extension requires **Flarum >= 1.7** and **PHP 8.2**.
+This extension requires **Flarum >= 1.8** and **PHP 8.2**.
 
 Install with composer:
 
