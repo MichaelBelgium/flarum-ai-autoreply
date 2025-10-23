@@ -100,8 +100,6 @@ class ReplyOnPost
 
     private function complete(Collection $messages)
     {
-        $this->logger->debug($messages->toJson());
-
         /** @var IPlatform $client */
         $client = match($this->platform) {
             'anthropic' => $this->anthropicClient,
