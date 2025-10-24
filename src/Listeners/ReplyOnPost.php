@@ -2,17 +2,16 @@
 
 namespace MichaelBelgium\FlarumAIAutoReply\Listeners;
 
-use Flarum\Post\CommentPost;
 use Flarum\Post\Event\Posted;
 use Flarum\Post\Post;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\User;
-use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\Queue\Queue;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use MichaelBelgium\FlarumAIAutoReply\AnthropicClient;
 use MichaelBelgium\FlarumAIAutoReply\GoogleClient;
-use MichaelBelgium\FlarumAIAutoReply\IPlatform;
+use MichaelBelgium\FlarumAIAutoReply\Job\Reply;
 use MichaelBelgium\FlarumAIAutoReply\OpenAIClient;
 use MichaelBelgium\FlarumAIAutoReply\OpenrouterClient;
 use Psr\Log\LoggerInterface;
@@ -22,7 +21,7 @@ class ReplyOnPost
     private string $platform;
 
     public function __construct(
-        protected Dispatcher $events,
+        protected Queue $queue,
         protected SettingsRepositoryInterface $settings,
         protected LoggerInterface $logger,
         protected OpenAIClient $openAIClient,
@@ -35,9 +34,6 @@ class ReplyOnPost
 
     public function handle(Posted $event): void
     {
-        //if enable_on_discussion_started is true, ONLY generate a comment to the first post of a discussion, not the subsequent posts
-            //if enable_on_discussion_started is false, generate a comment to every post in the discussion
-
         $discussion = $event->post->discussion;
         $enabledTagIds = $this->settings->get('michaelbelgium-ai-autoreply.enabled-tags', '[]');
 
@@ -86,29 +82,12 @@ class ReplyOnPost
             $posts->whereIn('user_id', [$op, $assistantId])->collect()
         );
 
-        $content = $this->complete($conversation);
-
-        $post = CommentPost::reply(
+        $this->queue->push(new Reply(
+            $this->platform,
             $discussion->id,
-            $content,
             $assistantId,
-            null,
+            $conversation->toArray())
         );
-
-        $post->save();
-    }
-
-    private function complete(Collection $messages)
-    {
-        /** @var IPlatform $client */
-        $client = match($this->platform) {
-            'anthropic' => $this->anthropicClient,
-            'openrouter' => $this->openrouterClient,
-            'google' => $this->googleClient,
-            default => $this->openAIClient,
-        };
-
-        return $client->completions($messages->toArray());
     }
 
     private function postsToAiMessages(Collection $posts): Collection
