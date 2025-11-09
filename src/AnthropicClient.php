@@ -2,14 +2,15 @@
 
 namespace MichaelBelgium\FlarumAIAutoReply;
 
-use Anthropic\Client;
 use Flarum\Settings\SettingsRepositoryInterface;
+use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 use Psr\Log\LoggerInterface;
-use const Anthropic\Core\OMIT as omit;
 
 class AnthropicClient implements IPlatform
 {
     private ?Client $client = null;
+
     public function __construct(protected SettingsRepositoryInterface $settings, protected LoggerInterface $logger)
     {
         $apiKey = $this->settings->get('michaelbelgium-ai-autoreply.api_key');
@@ -19,7 +20,12 @@ class AnthropicClient implements IPlatform
             return;
         }
 
-         $this->client = new Client($apiKey);
+         $this->client = new Client([
+             RequestOptions::HEADERS => [
+                 'x-api-key' => $apiKey,
+                 'anthropic-version' => '2023-06-01',
+             ]
+         ]);
     }
 
     public function completions(array $messages): ?string
@@ -33,15 +39,19 @@ class AnthropicClient implements IPlatform
         $systemPrompt = $this->settings->get('michaelbelgium-ai-autoreply.system_prompt');
 
         try {
-            $message = $this->client->messages->create(
-                empty($tokens) ? 1024 : (int)$tokens,
-                $messages,
-                empty($model) ? 'claude-haiku-4-5' : $model,
-                system: empty($systemPrompt) ? omit : $systemPrompt,
-                temperature: empty($temperature) ? omit : $temperature,
-            );
+            $response = $this->client->post('https://api.anthropic.com/v1/messages', [
+                RequestOptions::JSON => [
+                    'model' => empty($model) ? 'claude-haiku-4-5' : $model,
+                    'messages' => $messages,
+                    'max_tokens' => empty($tokens) ? 1024 : (int)$tokens,
+                    'temperature' => empty($temperature) ? 1 : $temperature,
+                    'system' => empty($systemPrompt) ? '' : $systemPrompt,
+                ]
+            ]);
 
-            return $message->content[0]['text'];
+            $json = json_decode((string)$response->getBody(), true);
+
+            return $json['content'][0]['text'];
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }

@@ -5,7 +5,6 @@ namespace MichaelBelgium\FlarumAIAutoReply;
 use Flarum\Settings\SettingsRepositoryInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
-use Illuminate\Support\Facades\Http;
 use Psr\Log\LoggerInterface;
 
 class OpenrouterClient implements IPlatform

@@ -4,8 +4,8 @@ namespace MichaelBelgium\FlarumAIAutoReply;
 
 use Exception;
 use Flarum\Settings\SettingsRepositoryInterface;
-use OpenAI;
-use OpenAI\Client;
+use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 use Psr\Log\LoggerInterface;
 
 class OpenAIClient implements IPlatform
@@ -21,7 +21,11 @@ class OpenAIClient implements IPlatform
             return;
         }
 
-        $this->client = OpenAI::client($apiKey);
+        $this->client = new Client([
+            RequestOptions::HEADERS => [
+                'Authorization' => "Bearer $apiKey",
+            ]
+        ]);
     }
 
     public function completions(array $messages): ?string
@@ -43,14 +47,18 @@ class OpenAIClient implements IPlatform
         }
 
         try {
-            $result = $this->client->chat()->create([
-                'model' => empty($model) ? 'gpt-5-mini' : $model,
-                'messages' => $messages,
-                'max_completion_tokens' => empty($tokens) ? null : (int)$tokens,
-                'temperature' => empty($temperature) ? 1 : (float)$temperature,
+            $response = $this->client->post('https://api.openai.com/v1/chat/completions', [
+                RequestOptions::JSON => [
+                    'model' => empty($model) ? 'gpt-5-mini' : $model,
+                    'messages' => $messages,
+                    'max_completion_tokens' => empty($tokens) ? null : (int)$tokens,
+                    'temperature' => empty($temperature) ? 1 : (float)$temperature,
+                ]
             ]);
 
-            return $result->choices[0]->message->content;
+            $json = json_decode((string)$response->getBody(), true);
+
+            return $json['choices'][0]['message']['content'];
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
