@@ -100,6 +100,14 @@ app.initializers.add('michaelbelgium/flarum-ai-autoreply', () => {
             help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.temperature_help'),
         })
         .registerSetting({
+            setting: 'michaelbelgium-ai-autoreply.system_prompt',
+            type: 'textarea',
+            rows: 5,
+            label: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.system_prompt_label'),
+            help: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.system_prompt_help'),
+            placeholder: app.translator.trans('michaelbelgium-ai-autoreply.admin.settings.system_prompt_placeholder'),
+        })
+        .registerSetting({
             setting: 'michaelbelgium-ai-autoreply.user_prompt',
             type: 'number',
             required: true,
