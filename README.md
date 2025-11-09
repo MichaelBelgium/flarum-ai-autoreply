@@ -6,11 +6,7 @@ A [Flarum](http://flarum.org) extension.
 
 This extension includes an auto-reply discussion feature, customizable max tokens, and permission controls who can use this feature.
 
-This extension is a fixed fork from [flarum-chatgpt](https://github.com/datlechin/flarum-chatgpt) with support for multiple platforms. Currently supporting:
-- OpenAI
-- Anthropic
-- OpenRouter
-- Google
+This extension is a fixed fork from [flarum-chatgpt](https://github.com/datlechin/flarum-chatgpt) with support for multiple platforms.
 
 Models from any of the supported platforms can be used. If you're using OpenRouter, you can specify a comma-separated list of models in the `model` setting to take advantage of its [model routing feature](https://openrouter.ai/docs/features/model-routing#the-models-parameter).
 
@@ -26,6 +22,18 @@ Install with composer:
 composer require michaelbelgium/flarum-ai-autoreply
 ```
 
+## Features
+
+- Auto-reply to new discussions using AI
+- Highly customizable
+  - Max tokens 
+  - Temperature
+  - System prompt[^1]
+  - ...
+- Permission controls for who can use the auto-reply feature
+- Support for multiple platforms: OpenAI, Anthropic, Google, OpenRouter
+
+
 ## Updating
 
 ```sh
@@ -39,3 +47,5 @@ php flarum cache:clear
 - [Packagist](https://packagist.org/packages/michaelbelgium/flarum-ai-autoreply)
 - [GitHub](https://github.com/michaelbelgium/flarum-ai-autoreply)
 - [Discuss](https://discuss.flarum.org/d/38244)
+
+[^1]: Not supported: Google and Openrouter (but does have [presets](https://openrouter.ai/docs/features/presets))
