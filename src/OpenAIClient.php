@@ -32,6 +32,15 @@ class OpenAIClient implements IPlatform
         $tokens = $this->settings->get('michaelbelgium-ai-autoreply.max_tokens');
         $model = $this->settings->get('michaelbelgium-ai-autoreply.model');
         $temperature = $this->settings->get('michaelbelgium-ai-autoreply.temperature');
+        $systemPrompt = $this->settings->get('michaelbelgium-ai-autoreply.system_prompt');
+
+        if (!empty($systemPrompt))
+        {
+            $messages = [
+                ['role' => 'developer', 'content' => $systemPrompt],
+                ...$messages,
+            ];
+        }
 
         try {
             $result = $this->client->chat()->create([

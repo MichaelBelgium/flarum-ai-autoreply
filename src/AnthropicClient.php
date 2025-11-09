@@ -30,13 +30,15 @@ class AnthropicClient implements IPlatform
         $tokens = $this->settings->get('michaelbelgium-ai-autoreply.max_tokens');
         $model = $this->settings->get('michaelbelgium-ai-autoreply.model');
         $temperature = $this->settings->get('michaelbelgium-ai-autoreply.temperature');
+        $systemPrompt = $this->settings->get('michaelbelgium-ai-autoreply.system_prompt');
 
         try {
             $message = $this->client->messages->create(
                 empty($tokens) ? 1024 : (int)$tokens,
                 $messages,
                 empty($model) ? 'claude-haiku-4-5' : $model,
-                temperature: empty($temperature) ? omit : $temperature
+                system: empty($systemPrompt) ? omit : $systemPrompt,
+                temperature: empty($temperature) ? omit : $temperature,
             );
 
             return $message->content[0]['text'];
