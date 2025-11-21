@@ -4,11 +4,13 @@ namespace MichaelBelgium\FlarumAIAutoReply\Job;
 
 use Flarum\Post\CommentPost;
 use Flarum\Queue\AbstractJob;
+use GuzzleHttp\Exception\ClientException;
 use MichaelBelgium\FlarumAIAutoReply\AnthropicClient;
 use MichaelBelgium\FlarumAIAutoReply\GoogleClient;
 use MichaelBelgium\FlarumAIAutoReply\IPlatform;
 use MichaelBelgium\FlarumAIAutoReply\OpenAIClient;
 use MichaelBelgium\FlarumAIAutoReply\OpenrouterClient;
+use Psr\Log\LoggerInterface;
 
 class Reply extends AbstractJob
 {
@@ -21,6 +23,7 @@ class Reply extends AbstractJob
     }
 
     public function handle(
+        LoggerInterface $logger,
         OpenAIClient $openAIClient,
         AnthropicClient $anthropicClient,
         OpenrouterClient $openrouterClient,
@@ -34,15 +37,23 @@ class Reply extends AbstractJob
             default => $openAIClient,
         };
 
-        $content = $client->completions($this->conversation);
+        try
+        {
+            $content = $client->completions($this->conversation);
 
-        $post = CommentPost::reply(
-            $this->discussionId,
-            $content,
-            $this->assistantId,
-            null,
-        );
+            $post = CommentPost::reply(
+                $this->discussionId,
+                $content,
+                $this->assistantId,
+                null,
+            );
 
-        $post->save();
+            $post->save();
+        } catch (ClientException $e) {
+            $response = json_decode($e->getResponse()->getBody());
+            $logger->error('[AI-AutoReply] Client error while generating reply: ' .$response);
+        } catch (\Exception $e) {
+            $logger->error('[AI-AutoReply] Error while generating reply: ' . $e->getMessage());
+        }
     }
 }
