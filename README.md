@@ -48,4 +48,4 @@ php flarum cache:clear
 - [GitHub](https://github.com/michaelbelgium/flarum-ai-autoreply)
 - [Discuss](https://discuss.flarum.org/d/38244)
 
-[^1]: Not supported: Google and Openrouter (but does have [presets](https://openrouter.ai/docs/features/presets))
+[^1]: Not supported: Google and Openrouter (but does have [presets](https://openrouter.ai/docs/guides/features/presets))
