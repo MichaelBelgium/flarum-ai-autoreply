@@ -13,6 +13,6 @@
         "build": "webpack --mode production"
     },
     "prettier": "@flarum/prettier-config",
-    "name": "@michaelbelgium/flarum-chatgpt",
+    "name": "@michaelbelgium/flarum-ai-autoreply",
     "version": "0.0.0"
 }
