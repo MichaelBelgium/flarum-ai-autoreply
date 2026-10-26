@@ -45,9 +45,9 @@ class ReplyOnPost
                 return;
         }
 
-        $event->actor->assertCan('useChatGPTAssistant', $discussion);
+        if (!$event->actor->can('useChatGPTAssistant', $discussion))
+            return;
 
-        $posts = $discussion->posts;
         $replyOnDiscussionStart = $this->settings->get('michaelbelgium-ai-autoreply.enable_on_discussion_started', true);
         $assistantId = $this->settings->get('michaelbelgium-ai-autoreply.user_prompt');
 
@@ -65,7 +65,7 @@ class ReplyOnPost
             return;
         }
 
-        if ($posts->count() == 1)
+        if ($discussion->posts()->count() == 1)
             $op = $event->actor->id; //$discussion->firstPost is null when discussion is started :(
         else
         {
@@ -78,9 +78,12 @@ class ReplyOnPost
                 return; //only reply to posts made by OP
         }
 
-        $conversation = $this->postsToAiMessages(
-            $posts->whereIn('user_id', [$op, $assistantId])->collect()
-        );
+        $posts = $discussion->comments()
+            ->whereIn('user_id', [$op, $assistantId])
+            ->orderBy('number')
+            ->get();
+
+        $conversation = $this->postsToAiMessages($posts);
 
         $this->queue->push(new Reply(
             $this->platform,
@@ -93,12 +96,13 @@ class ReplyOnPost
     private function postsToAiMessages(Collection $posts): Collection
     {
         $messages = new Collection();
+        $assistantId = $this->settings->get('michaelbelgium-ai-autoreply.user_prompt');
 
         /** @var Post $post */
         foreach ($posts as $post)
         {
             $messages->add([
-                'role' => $post->user->id == $this->settings->get('michaelbelgium-ai-autoreply.user_prompt') ? 'assistant' : 'user',
+                'role' => $post->user_id == $assistantId ? 'assistant' : 'user',
                 'content' => $post->content,
             ]);
         }

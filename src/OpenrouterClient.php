@@ -15,7 +15,7 @@ class OpenrouterClient extends Platform
             'messages' => $messages
         ];
 
-        if (str_contains(',', $this->resolveModel()))
+        if (str_contains($this->resolveModel(), ','))
             $options['models'] = explode(',', $this->resolveModel());
         else
             $options['model'] = $this->resolveModel();
